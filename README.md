@@ -1,17 +1,20 @@
-# Orbit Voice Chat
+# Orbit Voice Chat (Streamlit + Sesame CSM)
 
-A simple voice-based chat assistant powered by Sesame CSM and OpenAI GPT. Record your voice, get contextual replies.
+This app allows you to upload a .wav voice file, processes it with Sesame CSM, and generates a GPT-4-based reply using audio context.
 
-## Setup
+## Usage
 
-1. Clone the repo and install dependencies
-2. Add your OpenAI API key to a `.env` file
-3. Run with Streamlit
-
-```bash
-streamlit run app/voice_chat_app.py
-```
+1. Upload a `.wav` file in the browser.
+2. The app computes embeddings via Sesame CSM.
+3. A GPT-4 reply is generated based on the embedding.
 
 ## Deployment
 
-Use [Streamlit Community Cloud](https://streamlit.io/cloud) for easy 1-click deployment.
+Use [Streamlit Community Cloud](https://streamlit.io/cloud):
+
+- Set `app/voice_chat_app.py` as the entry point.
+- Add your OpenAI key in app secrets: `OPENAI_API_KEY`.
+
+## Requirements
+
+See `requirements.txt`. The CSM model is pulled directly from GitHub.

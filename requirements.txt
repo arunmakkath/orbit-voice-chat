@@ -2,5 +2,5 @@ streamlit
 torch
 openai
 python-dotenv
+soundfile
 git+https://github.com/SesameAILabs/csm.git
-
