@@ -52,7 +52,13 @@ duration = st.slider("Recording Duration (seconds)", 1, 10, 5)
 
 if st.button("Record & Talk"):
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
-        record_audio(tmpfile.name, duration)
+        uploaded_file = st.file_uploader("Upload your voice (.wav)", type=["wav"])
+      if uploaded_file:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmpfile:
+        tmpfile.write(uploaded_file.read())
+        audio_path = tmpfile.name
+        st.audio(audio_path)
+
         st.audio(tmpfile.name)
         embedding = get_embedding(tmpfile.name)
         reply, prompt = generate_response("User input from audio", embedding)
