@@ -1,20 +1,19 @@
-# Orbit Voice Chat (Streamlit + Sesame CSM)
+# Orbit Voice Chat (Self-contained)
 
-This app allows you to upload a .wav voice file, processes it with Sesame CSM, and generates a GPT-4-based reply using audio context.
+This app runs a voice-based assistant using a locally bundled version of Sesame CSM (based on Wav2Vec2).
 
-## Usage
+## Features
 
-1. Upload a `.wav` file in the browser.
-2. The app computes embeddings via Sesame CSM.
-3. A GPT-4 reply is generated based on the embedding.
+- Upload voice (`.wav`)
+- Generate audio embedding
+- GPT-4-based contextual response
+
+## Setup
+
+1. Add your OpenAI API key to a `.env` file.
+2. Run `streamlit run app/voice_chat_app.py`.
 
 ## Deployment
 
-Use [Streamlit Community Cloud](https://streamlit.io/cloud):
-
-- Set `app/voice_chat_app.py` as the entry point.
-- Add your OpenAI key in app secrets: `OPENAI_API_KEY`.
-
-## Requirements
-
-See `requirements.txt`. The CSM model is pulled directly from GitHub.
+- Upload to GitHub
+- Deploy via [Streamlit Community Cloud](https://streamlit.io/cloud)

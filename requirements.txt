@@ -1,6 +1,6 @@
 streamlit
 torch
+soundfile
 openai
 python-dotenv
-soundfile
-git+https://github.com/SesameAILabs/csm.git
+transformers

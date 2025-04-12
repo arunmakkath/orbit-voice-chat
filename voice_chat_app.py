@@ -3,20 +3,20 @@ import tempfile
 import os
 import openai
 import torch
-from csm import AutoProcessor, CSMModel
-from dotenv import load_dotenv
 import soundfile as sf
+from dotenv import load_dotenv
+from csm import AutoProcessor, CSMModel
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 st.set_page_config(page_title="🎤 Orbit Voice Chat", layout="centered")
-st.title("🎤 Orbit Voice Chat Assistant (Sesame CSM)")
+st.title("🎤 Orbit Voice Chat Assistant (Local Sesame CSM)")
 
 @st.cache_resource
 def load_model():
-    processor = AutoProcessor.from_pretrained("sesame/CSM")
-    model = CSMModel.from_pretrained("sesame/CSM")
+    processor = AutoProcessor.from_pretrained("facebook/wav2vec2-base-960h")
+    model = CSMModel.from_pretrained("facebook/wav2vec2-base-960h")
     return processor, model
 
 processor, model = load_model()
@@ -28,7 +28,7 @@ def get_embedding(audio_path):
     audio_input, sr = sf.read(audio_path)
     inputs = processor(audio=audio_input, sampling_rate=sr, return_tensors="pt")
     with torch.no_grad():
-        embedding = model(**inputs).last_hidden_state.mean(dim=1)
+        embedding = model(**inputs).mean(dim=1)
     return embedding
 
 def generate_response(user_prompt, embedding):
