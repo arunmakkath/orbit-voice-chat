@@ -2,11 +2,10 @@ import streamlit as st
 import tempfile
 import os
 import openai
-import sounddevice as sd
-import soundfile as sf
 import torch
 from transformers import AutoProcessor, CSMModel
 from dotenv import load_dotenv
+import soundfile as sf
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -24,11 +23,6 @@ processor, model = load_model()
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-
-def record_audio(filename, duration=5, samplerate=16000):
-    recording = sd.rec(int(samplerate * duration), samplerate=samplerate, channels=1)
-    sd.wait()
-    sf.write(filename, recording, samplerate)
 
 def get_embedding(audio_path):
     audio_input, sr = sf.read(audio_path)
@@ -48,19 +42,13 @@ def generate_response(user_prompt, embedding):
     response = openai.ChatCompletion.create(model="gpt-4", messages=messages)
     return response.choices[0].message.content, prompt
 
-duration = st.slider("Recording Duration (seconds)", 1, 10, 5)
-
-if st.button("Record & Talk"):
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
-        uploaded_file = st.file_uploader("Upload your voice (.wav)", type=["wav"])
-      if uploaded_file:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmpfile:
+uploaded_file = st.file_uploader("Upload your voice (.wav)", type=["wav"])
+if uploaded_file is not None:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmpfile:
         tmpfile.write(uploaded_file.read())
         audio_path = tmpfile.name
         st.audio(audio_path)
-
-        st.audio(tmpfile.name)
-        embedding = get_embedding(tmpfile.name)
+        embedding = get_embedding(audio_path)
         reply, prompt = generate_response("User input from audio", embedding)
         st.success(reply)
         st.session_state.chat_history.append({"user": prompt, "bot": reply})
