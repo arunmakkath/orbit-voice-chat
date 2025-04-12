@@ -3,7 +3,7 @@ import tempfile
 import os
 import openai
 import torch
-from transformers import AutoProcessor, CSMModel
+from csm import AutoProcessor, CSMModel
 from dotenv import load_dotenv
 import soundfile as sf
 
